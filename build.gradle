@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'com.frank'
+version '1.0-SNAPSHOT'
+
+mainClassName = 'com.frank.Main'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17) // 11 works, but I like bleeding edge
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.xerial:sqlite-jdbc:3.40.0.0'
+    implementation 'com.google.code.gson:gson:2.10'
+
+    implementation 'com.googlecode.plist:dd-plist:1.26'
+//
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+application {
+    mainClass = 'com.frank.Main'
+    applicationDefaultJvmArgs = ['-Dfile.encoding=UTF8']
+}
+
+//test {
+//    useJUnitPlatform()
+//}
+
+task uberJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'com.frank.Main'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
