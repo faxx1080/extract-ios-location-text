@@ -29,4 +29,3 @@ inner join Location l on l.rowid = z.rowid
 ```
 
 Export that result into a new table.
-
